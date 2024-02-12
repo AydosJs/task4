@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Login() {
   return (
     <div className="flex h-screen">
-      <div className="hidden lg:flex items-center justify-center flex-1 bg-neutral-100 text-neutral-900 font-medium text-black bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:26px_26px]">
+      <div className="hidden lg:flex items-center justify-center flex-1 bg-neutral-100 text-neutral-900 font-medium bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:26px_26px]">
         <div className="max-w-md text-center"></div>
       </div>
       <div className="w-full bg-neutral-900 lg:w-1/2 flex items-center justify-center">
