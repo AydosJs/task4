@@ -29,7 +29,7 @@ export default function Signup() {
                 type="text"
                 id="username"
                 name="username"
-                className="bg-neutral-100 mt-1 p-2 w-full border rounded-md focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
+                className="bg-neutral-100 mt-1 text-neutral-900 font-medium p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
               />
             </div>
             <div>
@@ -43,7 +43,7 @@ export default function Signup() {
                 type="text"
                 id="email"
                 name="email"
-                className="bg-neutral-100 mt-1 p-2 w-full border rounded-md focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
+                className="bg-neutral-100 mt-1 text-neutral-900 font-medium p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
               />
             </div>
             <div>
@@ -57,13 +57,13 @@ export default function Signup() {
                 type="password"
                 id="password"
                 name="password"
-                className="bg-neutral-100 mt-1 p-2 w-full border rounded-md focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
+                className="bg-neutral-100 mt-1 text-neutral-900 font-medium p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
               />
             </div>
             <div>
               <button
                 type="submit"
-                className="w-full bg-neutral-950 border-2 border-neutral-800 text-white p-3 rounded-md hover:bg-neutral-800 focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+                className="w-full bg-neutral-950 border-2 border-neutral-800 text-white p-3 rounded hover:bg-neutral-800 focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
               >
                 Submit
               </button>
@@ -76,7 +76,6 @@ export default function Signup() {
                 Login here
               </Link>
             </p>
-
 
             
           </div>
