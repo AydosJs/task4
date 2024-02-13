@@ -49,7 +49,7 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                className="w-full bg-neutral-950 border-2 border-neutral-800 text-white p-3 rounded hover:bg-neutral-800 focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+                className="w-full bg-neutral-800 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
               >
                 Submit
               </button>

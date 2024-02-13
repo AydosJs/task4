@@ -1,10 +1,14 @@
 import Link from "next/link";
+import { FaShieldAlt } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
+
 
 export default function Signup() {
   return (
     <div className="flex h-screen">
       <div className="hidden lg:flex items-center justify-center flex-1 bg-neutral-100 text-black bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:26px_26px]">
-        <div className="max-w-md text-center"></div>
+        <div className="max-w-md text-center">
+        </div>
       </div>
       <div className="w-full bg-neutral-900 lg:w-1/2 flex items-center justify-center">
         <div className="max-w-md w-full p-6">
@@ -63,7 +67,7 @@ export default function Signup() {
             <div>
               <button
                 type="submit"
-                className="w-full bg-neutral-950 border-2 border-neutral-800 text-white p-3 rounded hover:bg-neutral-800 focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+                className="w-full bg-neutral-800 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
               >
                 Submit
               </button>
@@ -76,8 +80,6 @@ export default function Signup() {
                 Login here
               </Link>
             </p>
-
-            
           </div>
         </div>
       </div>
