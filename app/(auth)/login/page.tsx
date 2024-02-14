@@ -1,6 +1,52 @@
+"use client";
 import Link from "next/link";
+import { useState } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/configs";
+import { useRouter } from "next/navigation";
+
+interface FormValues {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
+  const [formData, setFormData] = useState<FormValues>({
+    email: "",
+    password: "",
+  });
+  const router = useRouter()
+
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const res = await signInWithEmailAndPassword(formData.email, formData.password)
+      console.log({res})
+      setFormData({
+        email: "",
+        password: "",
+      });
+
+      if(res?.user){
+        sessionStorage.setItem('userId', res.user.uid)
+      }
+      router.push("/")
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="flex h-screen">
       <div className="hidden lg:flex items-center justify-center flex-1 bg-neutral-100 text-neutral-900 font-medium bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:26px_26px]">
@@ -17,7 +63,7 @@ export default function Login() {
             </h1>
           </div>
 
-          <form action="#" method="POST" className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
                 htmlFor="email"
@@ -26,6 +72,8 @@ export default function Login() {
                 Email
               </label>
               <input
+                value={formData.email}
+                onChange={handleChange}
                 type="text"
                 id="email"
                 name="email"
@@ -40,6 +88,8 @@ export default function Login() {
                 Password
               </label>
               <input
+                value={formData.password}
+                onChange={handleChange}
                 type="password"
                 id="password"
                 name="password"

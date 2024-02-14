@@ -1,10 +1,23 @@
+'use client'
 import Header from "@/components/Header";
 import { FaLock, FaLockOpen } from "react-icons/fa";
-import { AiFillDelete } from "react-icons/ai";
 import { RiDeleteBinFill } from "react-icons/ri";
 import Table from "@/components/Table";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase/configs";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter()
+  const [user] = useAuthState(auth);
+  const userId = sessionStorage.getItem('userId')
+
+  if(!user && !userId) {
+    router.push('/login')
+
+    return
+  }
+  
   return (
     <>
       <Header />

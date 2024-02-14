@@ -1,14 +1,61 @@
+"use client";
+import { auth } from "@/app/firebase/configs";
 import Link from "next/link";
-import { FaShieldAlt } from "react-icons/fa";
-import { FaStar } from "react-icons/fa";
+import { useState } from "react";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
+interface FormValues {
+  username: string;
+  email: string;
+  password: string;
+}
 
-export default function Signup() {
+export default function SignUp() {
+  const [formData, setFormData] = useState<FormValues>({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const [createUserWithEmailAndPassword] =
+    useCreateUserWithEmailAndPassword(auth);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const res = await createUserWithEmailAndPassword(
+        formData.email,
+        formData.password
+      );
+      console.log({res});
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+      });
+      if(res?.user){
+        sessionStorage.setItem('userId', res.user.uid)
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log("good");
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="flex h-screen">
       <div className="hidden lg:flex items-center justify-center flex-1 bg-neutral-100 text-black bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:26px_26px]">
-        <div className="max-w-md text-center">
-        </div>
+        <div className="max-w-md text-center"></div>
       </div>
       <div className="w-full bg-neutral-900 lg:w-1/2 flex items-center justify-center">
         <div className="max-w-md w-full p-6">
@@ -21,7 +68,7 @@ export default function Signup() {
             </h1>
           </div>
 
-          <form action="#" method="POST" className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
                 htmlFor="username"
@@ -30,6 +77,8 @@ export default function Signup() {
                 Username
               </label>
               <input
+                value={formData.username}
+                onChange={handleChange}
                 type="text"
                 id="username"
                 name="username"
@@ -44,6 +93,8 @@ export default function Signup() {
                 Email
               </label>
               <input
+                value={formData.email}
+                onChange={handleChange}
                 type="text"
                 id="email"
                 name="email"
@@ -58,6 +109,8 @@ export default function Signup() {
                 Password
               </label>
               <input
+                value={formData.password}
+                onChange={handleChange}
                 type="password"
                 id="password"
                 name="password"
