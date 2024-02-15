@@ -1,6 +1,11 @@
+import { QueryResult, sql } from "@vercel/postgres";
+import { UserValues } from "@/app/(auth)/signup/Form";
 import TableItem from "./TableItem";
 
-export default function Table() {
+export default async function Table() {
+  const result: QueryResult<UserValues> = await sql`SELECT * FROM users;`;
+  const fetchedUsers: UserValues[] = result.rows;
+
   return (
     <table className="w-full text-sm text-left bg-neutral-800 bg-opacity-50 rounded overflow-hidden ring-2 ring-neutral-800">
       <thead className="bg-neutral-800 bg-opacity-50 text-xs uppercase font-medium">
@@ -41,9 +46,10 @@ export default function Table() {
         </tr>
       </thead>
       <tbody className="font-medium">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((i, index) => (
-          <TableItem key={++index} index={index} />
-        ))}
+        {fetchedUsers.length !== 0 &&
+          fetchedUsers.map((user, index) => (
+            <TableItem key={user.id} user={user} index={index} />
+          ))}
       </tbody>
     </table>
   );

@@ -1,11 +1,15 @@
+import { UserValues } from "@/app/(auth)/signup/Form";
+
 type Props = {
+  user: UserValues;
   index: number;
 };
 
-export default function TableItem({ index }: Props) {
-
+export default function TableItem({ user, index }: Props) {
+  const dayjs = require("dayjs");
   return (
     <tr
+      key={user.id}
       className={`divide-x group divide-neutral-800 text-neutral-500 cursor-pointer ${
         ++index % 2 == 0 && "bg-neutral-800/40"
       } hover:bg-neutral-950/50`}
@@ -24,24 +28,30 @@ export default function TableItem({ index }: Props) {
       </td>
       <td className="p-4 py-2 sm:py-4 sm:hidden">
         <div className="flex flex-col">
-          <span>Pavel Lebedov</span>
-          <span>Office manager</span>
-          <span className="font-bold">p.lebedov@gmail.com</span>
+          <span>
+            {user?.name} {user?.position ? `/ ${user?.position}` : ""}
+          </span>
+          <span></span>
+          <span className="font-bold">{user?.email}</span>
         </div>
       </td>
-      <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">Pavel Lebedov</td>
-      <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">Office manager</td>
+      <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">{user?.name}</td>
       <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
-        p.lebedov@gmail.com
+        {user?.position}
+      </td>
+      <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">{user?.email}</td>
+      <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
+        {dayjs(user?.registered).format("MMM D, YYYY h:mm A")}
       </td>
       <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
-        13.07.03, 2 Nov, 2022
-      </td>
-      <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
-        12.10.07, 2 Sep, 2022
+        {dayjs(user?.lastLoggedIn).format("MMM D, YYYY h:mm A")}
       </td>
       <td className="p-4 py-2 sm:py-4">
-        <span className="p-[3px] rounded-full px-2 bg-opacity-50 bg-neutral-800 text-green-700">
+        <span
+          className={`p-[3px] rounded-full px-2 bg-opacity-50 bg-neutral-800 ${
+            user?.status === "active" ? "text-green-700" : "text-red-700"
+          }`}
+        >
           Active
         </span>
       </td>

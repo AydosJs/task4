@@ -26,7 +26,18 @@ const handler = NextAuth({
         );
 
         if (isPasswordValid) {
-          return { id: user.id, name: user.name, email: user.email };
+          // Update lastlogged_in timestamp
+          await sql`
+      UPDATE users
+      SET lastlogged_in = CURRENT_TIMESTAMP
+      WHERE id = ${user.id}`;
+
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            status: user.status,
+          };
         }
 
         return null;

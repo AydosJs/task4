@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
+import Table from "@/components/Table";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { RiDeleteBinFill } from "react-icons/ri";
-import Table from "@/components/Table";
 
 export default function Home() {
   return (

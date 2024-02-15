@@ -2,15 +2,14 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-interface FormValues {
-  email: string;
-  password: string;
-}
+import toast from "react-hot-toast";
+import { UserValues, emailRegex } from "../signup/Form";
+import { CgSpinner } from "react-icons/cg";
 
 export default function Form() {
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [formData, setFormData] = useState<FormValues>({
+  const [formData, setFormData] = useState<UserValues>({
     email: "",
     password: "",
   });
@@ -18,14 +17,37 @@ export default function Form() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const res = await signIn("credentials", {
+      setLoading(true);
+      if (!emailRegex.test(formData.email)) {
+        return toast.error("Invalid email");
+      } else if (
+        !formData.password ||
+        formData.password === "" ||
+        formData.password === " "
+      ) {
+        return toast.error("Use another password");
+      }
+
+      const data = {
         ...formData,
+        lastLoggedIn: new Date(),
+      };
+
+      const res = await signIn("credentials", {
+        ...data,
         redirect: false,
       });
+
+      if (res?.error || !res?.ok || res === null) {
+        return toast.error("Invalid email or password");
+      }
+
       router.push("/");
       router.refresh();
     } catch (error) {
-      console.log({ error });
+      console.log("login error", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,6 +69,7 @@ export default function Form() {
           Email
         </label>
         <input
+          required
           value={formData.email}
           onChange={handleChange}
           type="text"
@@ -63,6 +86,7 @@ export default function Form() {
           Password
         </label>
         <input
+          required
           value={formData.password}
           onChange={handleChange}
           type="password"
@@ -73,10 +97,16 @@ export default function Form() {
       </div>
       <div>
         <button
+          disabled={
+            formData.password === "" || formData.password === " " || loading
+          }
           type="submit"
-          className="w-full bg-neutral-800 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
+          className="disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-neutral-800 disabled:hover:border-neutral-700 w-full bg-neutral-800 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
         >
-          Submit
+          <div className="flex flex-row items-center justify-center w-full">
+            Submit
+            {loading && <CgSpinner className="w-5 h-5 ml-2 animate-spin" />}
+          </div>
         </button>
       </div>
     </form>
