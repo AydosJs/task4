@@ -1,16 +1,10 @@
 'use client'
-import { auth } from "@/app/firebase/configs";
-import { signOut } from "firebase/auth";
-
 import { BiSolidExit } from "react-icons/bi";
 
 export default function Header() {
 
   const signOutFn = () => {
-    if(confirm("Are you sure?")) {
-      signOut(auth)
-      sessionStorage.removeItem('userId')
-    }
+    console.log('sign out');
   }
 
   return (

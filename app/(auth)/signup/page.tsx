@@ -1,8 +1,6 @@
 "use client";
-import { auth } from "@/app/firebase/configs";
 import Link from "next/link";
 import { useState } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 interface FormValues {
   username: string;
@@ -17,31 +15,8 @@ export default function SignUp() {
     password: "",
   });
 
-  const [createUserWithEmailAndPassword] =
-    useCreateUserWithEmailAndPassword(auth);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    try {
-      const res = await createUserWithEmailAndPassword(
-        formData.email,
-        formData.password
-      );
-      console.log({res});
-      setFormData({
-        username: "",
-        email: "",
-        password: "",
-      });
-      if(res?.user){
-        sessionStorage.setItem('userId', res.user.uid)
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("good");
-    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

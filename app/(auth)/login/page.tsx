@@ -1,9 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/configs";
-import { useRouter } from "next/navigation";
 
 interface FormValues {
   email: string;
@@ -15,28 +12,9 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const router = useRouter()
-
-  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    try {
-      const res = await signInWithEmailAndPassword(formData.email, formData.password)
-      console.log({res})
-      setFormData({
-        email: "",
-        password: "",
-      });
-
-      if(res?.user){
-        sessionStorage.setItem('userId', res.user.uid)
-      }
-      router.push("/")
-    } catch (error) {
-      console.log(error)
-    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
