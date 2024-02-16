@@ -1,11 +1,12 @@
 import { QueryResult, sql } from "@vercel/postgres";
 import { UserValues } from "@/app/(auth)/signup/Form";
 import TableItem from "./TableItem";
+import { getServerSession } from "next-auth";
 
 export default async function Table() {
-  const result: QueryResult<UserValues> = await sql`SELECT * FROM users;`;
-  const fetchedUsers: UserValues[] = result.rows;
-
+  const result: QueryResult<UserValues> = await sql`SELECT * FROM users`;
+  const session = await getServerSession();
+  console.log("session session", session);
   return (
     <table className="w-full text-sm text-left bg-neutral-800 bg-opacity-50 rounded overflow-hidden ring-2 ring-neutral-800">
       <thead className="bg-neutral-800 bg-opacity-50 text-xs uppercase font-medium">
@@ -46,9 +47,14 @@ export default async function Table() {
         </tr>
       </thead>
       <tbody className="font-medium">
-        {fetchedUsers.length !== 0 &&
-          fetchedUsers.map((user, index) => (
-            <TableItem key={user.id} user={user} index={index} />
+        {result.rows.length !== 0 &&
+          result.rows.map((user, index) => (
+            <TableItem
+              sessionUser={session?.user}
+              key={user.id}
+              user={user}
+              index={index}
+            />
           ))}
       </tbody>
     </table>

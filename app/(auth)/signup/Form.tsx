@@ -3,7 +3,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { CgSpinner } from "react-icons/cg";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 export interface UserValues {
   id?: string | number;
@@ -19,6 +19,7 @@ export const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 export default function Form() {
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<UserValues>({
@@ -43,13 +44,31 @@ export default function Form() {
       }
       const response = await fetch("api/auth/register", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
-      //   signIn("credentials", data.user);
+
+      if (!response.ok) {
+        console.log("error", response);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      } else {
+        const userInfo = await response.json();
+
+        const data = {
+          email: formData.email,
+          password: formData.password,
+        };
+        const res = await signIn("credentials", {
+          ...formData,
+          redirect: false,
+        });
+        console.log("res Signin", res, data, userInfo);
+      }
 
       toast.success("Successfully registered");
       router.push("/");
-      router.refresh();
     } catch (error) {
       console.log("login error", error);
     } finally {

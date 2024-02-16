@@ -2,11 +2,19 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import { sql } from "@vercel/postgres";
+import { UserValues } from "@/app/(auth)/signup/Form";
+
+declare module "next-auth" {
+  interface Session {
+    user: UserValues;
+  }
+}
 
 const handler = NextAuth({
   session: {
     strategy: "jwt",
   },
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
   },
@@ -21,7 +29,7 @@ const handler = NextAuth({
         SELECT * FROM users WHERE email=${credentials?.email}`;
         const user = res.rows[0];
         const isPasswordValid = await compare(
-          credentials?.password || "",
+          credentials?.password ?? "",
           user.password
         );
 
@@ -44,6 +52,19 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        return { ...token, ...session.user };
+      }
+      return { ...token, ...user };
+    },
+
+    async session({ session, token, user }) {
+      session.user = token as any;
+      return session;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };

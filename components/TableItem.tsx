@@ -3,16 +3,23 @@ import { UserValues } from "@/app/(auth)/signup/Form";
 type Props = {
   user: UserValues;
   index: number;
+  sessionUser?: UserValues;
 };
 
-export default function TableItem({ user, index }: Props) {
+export default function TableItem({
+  user,
+  index,
+  sessionUser,
+}: Readonly<Props>) {
   const dayjs = require("dayjs");
   return (
     <tr
       key={user.id}
       className={`divide-x group divide-neutral-800 text-neutral-500 cursor-pointer ${
         ++index % 2 == 0 && "bg-neutral-800/40"
-      } hover:bg-neutral-950/50`}
+      } hover:bg-neutral-950/50 ${
+        sessionUser?.email === user.email && "border-2 border-neutral-700"
+      }`}
     >
       <td className="p-4 w-4 opacity-50 group-hover:opacity-100">
         <div className="flex items-center">

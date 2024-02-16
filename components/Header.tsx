@@ -1,9 +1,9 @@
-import { getServerSession } from "next-auth";
+"use client";
 import LogoutButton from "./LogoutButton";
+import { useSession } from "next-auth/react";
 
-export default async function Header() {
-  const session = await getServerSession();
-  console.log("session", session);
+export default function Header() {
+  const { data: session } = useSession();
   return (
     <header className="sticky z-50 top-0 backdrop-blur-md border-b border-neutral-800 ">
       <div className="container mx-auto p-6 py-4 sm:px-16 flex flex-row justify-between items-center">
