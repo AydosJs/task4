@@ -11,12 +11,17 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String  @db.VarChar(255)  // Store securely using a robust hashing mechanism
-  position  String
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String   @db.VarChar(255) // Store securely using a robust hashing mechanism
+  position   String
   registered DateTime @default(now())
   lastLogin  DateTime @default(now())
-  status    String   @default("active") @isEnum("active", "blocked")
+  status     Status   @default(active)
+}
+
+enum Status {
+  active
+  blocked
 }

@@ -1,6 +1,7 @@
 "use client";
 import { UserValues } from "@/app/(auth)/signup/Form";
 import { useGlobalContext } from "@/context/store";
+import { CgSpinner } from "react-icons/cg";
 
 type Props = {
   userList: UserValues[];
@@ -12,7 +13,7 @@ export default function TableBody({ userList, sessionUser }: Readonly<Props>) {
   if (!context) {
     throw new Error("Component must be used within a Provider");
   }
-  const { selectedId, setSelectedId } = context;
+  const { selectedId, setSelectedId, loading } = context;
 
   const dayjs = require("dayjs");
 
@@ -27,7 +28,7 @@ export default function TableBody({ userList, sessionUser }: Readonly<Props>) {
   };
 
   return (
-    <tbody className="font-medium">
+    <tbody className="relative font-medium">
       {userList.map((user, index) => (
         <tr
           onClick={() => handleItemClick(Number(user.id))}
@@ -90,11 +91,17 @@ export default function TableBody({ userList, sessionUser }: Readonly<Props>) {
                 user?.status === "active" ? "text-green-700" : "text-red-700"
               }`}
             >
-              Active
+              {user?.status === "active" ? "Active" : "Blocked"}
             </span>
           </td>
         </tr>
       ))}
+
+      {!!loading && (
+        <div className="absolute top-0 left-0 w-full h-full bg-neutral-950/60 flex items-center justify-center">
+          <CgSpinner className="w-10 h-10 ml-2 animate-spin z-20" />
+        </div>
+      )}
     </tbody>
   );
 }
