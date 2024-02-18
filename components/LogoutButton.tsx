@@ -11,9 +11,10 @@ export default function LogoutButton() {
     <button
       onClick={() => {
         if (confirm("Are you sure you want to logout?")) {
-          signOut();
+          signOut({ redirect: false }).then(() => {
+            router.push("/login"); // Redirect to the home page after signing out
+          });
           toast.success("You have been logged out");
-          router.push("/login");
         }
       }}
       className="p-1 border border-neutral-700 opacity-60 hover:opacity-100 hover:bg-neutral-800 font-normal rounded flex flex-row items-center px-3 hover:text-neutral-100"

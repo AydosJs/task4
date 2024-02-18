@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
-import { sql } from "@vercel/postgres";
 import { UserValues } from "@/app/(auth)/signup/Form";
+
+import prisma from "@/lib/prisma";
 
 declare module "next-auth" {
   interface Session {
@@ -24,27 +25,33 @@ const handler = NextAuth({
         email: {},
         password: {},
       },
-      async authorize(credentials, req) {
-        const res = await sql`
-        SELECT * FROM users WHERE email=${credentials?.email}`;
-        const user = res.rows[0];
-        const isPasswordValid = await compare(
-          credentials?.password ?? "",
-          user.password
-        );
+      async authorize(credentials) {
+        const userPromise = prisma.user.findUnique({
+          where: {
+            email: credentials?.email,
+          },
+        });
 
-        if (isPasswordValid) {
-          // Update lastlogged_in timestamp
-          await sql`
-      UPDATE users
-      SET lastlogged_in = CURRENT_TIMESTAMP
-      WHERE id = ${user.id}`;
+        const user = await userPromise;
+
+        if (user) {
+          const isPasswordValid = await compare(
+            credentials?.password ?? "",
+            user.password
+          );
+
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          const res = await prisma.user.update({
+            where: { email: user.email },
+            data: { lastLogin: new Date() },
+          });
 
           return {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            status: user.status,
+            ...user,
+            id: String(user.id),
           };
         }
 

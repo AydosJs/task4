@@ -3,23 +3,22 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { CgSpinner } from "react-icons/cg";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export interface UserValues {
-  id?: string | number;
-  status?: "active" | "blocked";
-  position?: string;
-  name?: string;
+  id?: number | string | null;
+  name?: string | null;
   email: string;
   password: string;
-  lastLoggedIn?: string;
-  registered?: string;
+  position?: string | null;
+  registered?: Date | null;
+  lastLogin?: Date | null;
+  status?: string | null;
 }
 export const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 export default function Form() {
-  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<UserValues>({
@@ -63,12 +62,13 @@ export default function Form() {
         const res = await signIn("credentials", {
           ...formData,
           redirect: false,
+        }).then(() => {
+          toast.success("Successfully registered");
+          router.push("/");
         });
+
         console.log("res Signin", res, data, userInfo);
       }
-
-      toast.success("Successfully registered");
-      router.push("/");
     } catch (error) {
       console.log("login error", error);
     } finally {
@@ -94,7 +94,7 @@ export default function Form() {
           Name
         </label>
         <input
-          value={formData.name}
+          value={formData.name ? formData.name : ""}
           onChange={handleChange}
           type="text"
           id="name"
@@ -110,7 +110,7 @@ export default function Form() {
           Position
         </label>
         <input
-          value={formData.position}
+          value={formData.position ? formData.position : ""}
           onChange={handleChange}
           type="text"
           id="position"
