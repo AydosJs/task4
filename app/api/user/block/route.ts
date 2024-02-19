@@ -15,9 +15,10 @@ export async function PATCH(request: Request, res: Response) {
       updatedUsers,
     });
   } catch (error) {
-    // Handle errors gracefully, log for debugging, and return informative error messages
-    // without exposing sensitive information
     console.error("Error updating user statuses:", error);
-    return { success: false, message: "Error updating statuses" };
+    return NextResponse.json({
+      success: false,
+      message: "Error updating statuses",
+    });
   }
 }
