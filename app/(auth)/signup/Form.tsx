@@ -4,17 +4,8 @@ import toast from "react-hot-toast";
 import { CgSpinner } from "react-icons/cg";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { UserValues } from "@/types";
 
-export interface UserValues {
-  id?: number | string | null;
-  name?: string | null;
-  email: string;
-  password: string;
-  position?: string | null;
-  registered?: Date | null;
-  lastLogin?: Date | null;
-  status?: string | null;
-}
 export const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 

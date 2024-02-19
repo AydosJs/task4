@@ -1,16 +1,30 @@
 "use client";
 import { useGlobalContext } from "@/context/store";
-import React, { useState } from "react";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { RiDeleteBinFill } from "react-icons/ri";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function TableToolbar() {
+  const queryClient = useQueryClient();
   const context = useGlobalContext();
+  const { data: session } = useSession();
+  const router = useRouter();
+
   if (!context) {
     throw new Error("Component must be used within a Provider");
   }
   const { selectedId, setIsLoading, setSelectedId } = context;
+
+  const checkId = () => {
+    if (selectedId.includes(Number(session?.user.id))) {
+      return signOut({ redirect: false }).then(() => {
+        router.push("/login"); // Redirect to the home page after signing out
+      });
+    }
+  };
 
   const handleDeleteClick = async () => {
     if (selectedId.length == 0 || !confirm("Are you sure you want to delete?"))
@@ -34,7 +48,11 @@ export default function TableToolbar() {
       });
       if (response.ok) {
         const data = await response.json();
+        queryClient.invalidateQueries({
+          queryKey: ["users"],
+        });
         toast.success(data.message);
+        checkId();
       } else {
         console.log("Unexpected response:", response.status);
       }
@@ -61,9 +79,13 @@ export default function TableToolbar() {
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message);
+        checkId();
       } else {
         console.log("Unexpected response:", response.status);
       }
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
     } catch (error) {
       console.log("Block error", error);
     } finally {
@@ -93,6 +115,9 @@ export default function TableToolbar() {
       } else {
         console.log("Unexpected response:", response.status);
       }
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
     } catch (error) {
       console.log(error);
     } finally {

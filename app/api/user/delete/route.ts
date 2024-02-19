@@ -1,22 +1,3 @@
-// import prisma from "@/lib/prisma";
-// import type { NextApiRequest, NextApiResponse } from "next";
-
-// export default async function DELETE(
-//   req: NextApiRequest,
-//   res: NextApiResponse
-// ) {
-//   const { selectedId } = req.body;
-//   console.log("selectedId", selectedId);
-//   const result = await prisma.user.deleteMany({
-//     where: {
-//       id: {
-//         in: selectedId,
-//       },
-//     },
-//   });
-//   res.json({ message: "Deleted successfully", result });
-// }
-
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -32,7 +13,7 @@ export async function DELETE(request: Request, res: Response) {
   });
 
   return NextResponse.json({
-    message: "Sussed!",
+    message: "User deleted successfully!",
     result,
   });
 }

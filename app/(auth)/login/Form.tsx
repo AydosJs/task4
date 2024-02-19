@@ -3,8 +3,9 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { UserValues, emailRegex } from "../signup/Form";
+import { emailRegex } from "../signup/Form";
 import { CgSpinner } from "react-icons/cg";
+import { UserValues } from "@/types";
 
 export default function Form() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +42,7 @@ export default function Form() {
           router.push("/");
           router.refresh();
         })
-        .catch((error) => {
+        .catch(() => {
           return toast.error("Invalid email or password");
         });
     } catch (error) {

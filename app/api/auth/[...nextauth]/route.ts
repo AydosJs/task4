@@ -1,9 +1,10 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
-import { UserValues } from "@/app/(auth)/signup/Form";
 
 import prisma from "@/lib/prisma";
+import { UserValues } from "@/types";
+import toast from "react-hot-toast";
 
 declare module "next-auth" {
   interface Session {
@@ -34,7 +35,12 @@ const handler = NextAuth({
 
         const user = await userPromise;
 
-        if (user) {
+        if (user && user.status === "blocked") {
+          toast.error(`User is not allowed!`);
+          return null;
+        }
+
+        if (user && user.status !== "blocked") {
           const isPasswordValid = await compare(
             credentials?.password ?? "",
             user.password
@@ -44,7 +50,7 @@ const handler = NextAuth({
             return null;
           }
 
-          const res = await prisma.user.update({
+          await prisma.user.update({
             where: { email: user.email },
             data: { lastLogin: new Date() },
           });

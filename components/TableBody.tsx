@@ -1,6 +1,6 @@
 "use client";
-import { UserValues } from "@/app/(auth)/signup/Form";
 import { useGlobalContext } from "@/context/store";
+import { UserValues } from "@/types";
 import { CgSpinner } from "react-icons/cg";
 
 type Props = {
@@ -36,10 +36,10 @@ export default function TableBody({ userList, sessionUser }: Readonly<Props>) {
           className={`divide-x group divide-neutral-800 text-neutral-500 cursor-pointer ${
             ++index % 2 == 0 && "bg-neutral-800/40"
           } hover:bg-neutral-950/50 ${
-            sessionUser?.email === user.email && "border-2 border-neutral-700"
+            sessionUser?.email === user.email &&
+            " outline outline-offset-0 outline-neutral-700/50"
           }
-          ${selectedId.includes(Number(user.id)) && "bg-neutral-950/50"}
-          `}
+          ${selectedId.includes(Number(user.id)) && "bg-neutral-950/50 "}`}
         >
           <td
             className={`${
@@ -80,10 +80,10 @@ export default function TableBody({ userList, sessionUser }: Readonly<Props>) {
             {user?.email}
           </td>
           <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
-            {dayjs(user?.registered).format("MMM D, YYYY h:mm A")}
+            {dayjs(user?.lastLogin).format("MMM D, YYYY h:mm A")}
           </td>
           <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
-            {dayjs(user?.lastLogin).format("MMM D, YYYY h:mm A")}
+            {dayjs(user?.registered).format("MMM D, YYYY h:mm A")}
           </td>
           <td className="p-4 py-2 sm:py-4">
             <span
@@ -98,9 +98,13 @@ export default function TableBody({ userList, sessionUser }: Readonly<Props>) {
       ))}
 
       {!!loading && (
-        <div className="absolute top-0 left-0 w-full h-full bg-neutral-950/60 flex items-center justify-center">
-          <CgSpinner className="w-10 h-10 ml-2 animate-spin z-20" />
-        </div>
+        <tr>
+          <td>
+            <div className="absolute top-0 left-0 w-full h-full bg-neutral-950/60 flex items-center justify-center">
+              <CgSpinner className="w-10 h-10 ml-2 animate-spin z-20" />
+            </div>
+          </td>
+        </tr>
       )}
     </tbody>
   );
