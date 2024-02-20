@@ -18,10 +18,12 @@ export default function Table() {
     <>
       {isLoading && <p>Loading...</p>}
       {users?.data && (
-        <table className="w-full text-sm text-left bg-neutral-800 bg-opacity-50 rounded overflow-hidden ring-2 ring-neutral-800">
-          <TableHead userList={users.data} />
-          <TableBody userList={users.data} sessionUser={session?.user} />
-        </table>
+        <div className="overflow-hidden p-1 w-full overflow-x-auto">
+          <table className="w-full min-w-[650px] overflow-x-auto text-sm text-left bg-neutral-800 bg-opacity-50 rounded overflow-hidden ring-2 ring-neutral-800">
+            <TableHead userList={users.data} />
+            <TableBody userList={users.data} sessionUser={session?.user} />
+          </table>
+        </div>
       )}
     </>
   );

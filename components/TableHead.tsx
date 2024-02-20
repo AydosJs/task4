@@ -45,6 +45,9 @@ export default function TableHead({ userList }: Readonly<Props>) {
         <th scope="col" className="p-4 sm:hidden">
           Name & Position & Email
         </th>
+        <th scope="col" className="p-4 sm:hidden">
+          Status
+        </th>
         <th scope="col" className="p-4 hidden sm:table-cell">
           Name
         </th>
@@ -54,13 +57,13 @@ export default function TableHead({ userList }: Readonly<Props>) {
         <th scope="col" className="p-4 hidden sm:table-cell">
           Email
         </th>
-        <th scope="col" className="p-4 hidden sm:table-cell">
+        <th scope="col" className="p-4">
           Last login
         </th>
-        <th scope="col" className="p-4 hidden sm:table-cell">
+        <th scope="col" className="p-4">
           Registered
         </th>
-        <th scope="col" className="p-4">
+        <th scope="col" className="p-4 hidden sm:table-cell">
           Status
         </th>
       </tr>

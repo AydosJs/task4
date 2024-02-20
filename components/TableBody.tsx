@@ -70,6 +70,15 @@ export default function TableBody({ userList, sessionUser }: Readonly<Props>) {
               <span className="font-bold">{user?.email}</span>
             </div>
           </td>
+          <td className="p-4 py-2 sm:hidden sm:py-4">
+            <span
+              className={`p-[3px] rounded-full px-2 bg-opacity-50 bg-neutral-800 ${
+                user?.status === "active" ? "text-green-700" : "text-red-700"
+              }`}
+            >
+              {user?.status === "active" ? "Active" : "Blocked"}
+            </span>
+          </td>
           <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
             {user?.name}
           </td>
@@ -79,13 +88,13 @@ export default function TableBody({ userList, sessionUser }: Readonly<Props>) {
           <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
             {user?.email}
           </td>
-          <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
+          <td className="p-4 py-2 sm:py-4">
             {dayjs(user?.lastLogin).format("MMM D, YYYY h:mm A")}
           </td>
-          <td className="p-4 py-2 sm:py-4 hidden sm:table-cell">
+          <td className="p-4 py-2 sm:py-4">
             {dayjs(user?.registered).format("MMM D, YYYY h:mm A")}
           </td>
-          <td className="p-4 py-2 sm:py-4">
+          <td className="p-4 py-2 hidden sm:table-cell  sm:py-4">
             <span
               className={`p-[3px] rounded-full px-2 bg-opacity-50 bg-neutral-800 ${
                 user?.status === "active" ? "text-green-700" : "text-red-700"

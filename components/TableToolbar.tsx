@@ -127,7 +127,7 @@ export default function TableToolbar() {
   };
 
   return (
-    <div className="flex flex-row mb-4 space-x-2 items-center justify-start w-full">
+    <div className="flex flex-row mb-4 space-x-2 items-center justify-start w-full p-1">
       <button
         onClick={handleBlock}
         className="px-2 py-1 opacity-60 hover:opacity-100 border-2 bg-red-800 border-red-500 font-normal rounded flex flex-row items-center"
