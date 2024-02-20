@@ -5,6 +5,7 @@ import { CgSpinner } from "react-icons/cg";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { UserValues } from "@/types";
+import axios from "axios";
 
 export const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -28,15 +29,12 @@ export default function Form() {
       } else if (!formData.password?.trim()) {
         return toast.error("Use another password!");
       }
-      const response = await fetch("api/auth/register", {
-        method: "POST",
+      const response = await axios.post("api/auth/register", formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
       });
-
-      if (!response.ok) {
+      if (response.data.message === "User already exists") {
         toast.error("Email already registered. Please use a different email.");
       } else {
         await signIn("credentials", {

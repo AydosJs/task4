@@ -8,12 +8,7 @@ export async function POST(request: Request) {
   const existingUser = await prisma.user.findUnique({
     where: { email },
   });
-
-  if (existingUser) {
-    // User already exists
-    return null;
-    // throw new Error("Email already registered. Please use a different email.");
-  } else {
+  if (!existingUser) {
     const hashedPassword = await hash(password, 10);
     const user = await prisma.user.create({
       data: {
@@ -34,6 +29,10 @@ export async function POST(request: Request) {
       message: "Sussed!",
       redirect: "/",
       user: { ...user },
+    });
+  } else {
+    return NextResponse.json({
+      message: "User already exists",
     });
   }
 }
