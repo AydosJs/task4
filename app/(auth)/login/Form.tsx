@@ -36,11 +36,17 @@ export default function Form() {
       });
 
       if (res?.ok) {
+        router.push("/");
+        router.refresh();
+        setFormData(() => {
+          return {
+            email: "",
+            password: "",
+          };
+        });
         toast.success("Successfully logged in", {
           id: "successfullyLoggedIn",
         });
-        router.push("/");
-        router.refresh();
       } else {
         toast.error(res?.error ?? "Invalid email or password", {
           id: "invalidEmailOrPassword",

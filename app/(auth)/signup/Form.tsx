@@ -47,10 +47,18 @@ export default function Form() {
           ...formData,
           redirect: false,
         }).then(() => {
+          setFormData(() => {
+            return {
+              name: "",
+              email: "",
+              password: "",
+              position: "",
+            };
+          });
+          router.push("/");
           toast.success("Successfully registered", {
             id: "successfullyRegistered",
           });
-          router.push("/");
         });
       }
     } catch (error) {
