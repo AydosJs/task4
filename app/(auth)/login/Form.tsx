@@ -36,6 +36,9 @@ export default function Form() {
       });
 
       if (res?.ok) {
+        toast.success("Successfully logged in", {
+          id: "successfullyLoggedIn",
+        });
         router.push("/");
         router.refresh();
       } else {
