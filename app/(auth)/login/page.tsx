@@ -12,10 +12,10 @@ export default async function Login() {
 
   return (
     <div className="flex h-screen">
-      <div className="hidden lg:flex items-center justify-center flex-1 bg-neutral-100 text-neutral-900 font-medium bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:26px_26px]">
+      {/* <div className="hidden lg:flex items-center justify-center flex-1 bg-neutral-100 text-neutral-900 font-medium bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:26px_26px]">
         <div className="max-w-md text-center"></div>
-      </div>
-      <div className="w-full bg-neutral-900 lg:w-1/2 flex items-center justify-center">
+      </div> */}
+      <div className="w-full bg-neutral-900 flex items-center justify-center">
         <div className="max-w-md w-full p-6">
           <div className="mb-10">
             <h1 className="text-3xl font-semibold mb-4 text-white text-center">

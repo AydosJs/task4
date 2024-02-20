@@ -27,8 +27,10 @@ export default function TableToolbar() {
   };
 
   const handleDeleteClick = async () => {
-    if (selectedId.length == 0 || !confirm("Are you sure you want to delete?"))
-      return;
+    if (selectedId.length === 0) {
+      return toast.error("No items have been selected yet.");
+    }
+    if (!confirm("Are you sure you want to delete?")) return;
     try {
       deleteItem();
     } catch (error) {
@@ -65,8 +67,10 @@ export default function TableToolbar() {
   };
 
   const handleBlock = async () => {
-    if (selectedId.length == 0 || !confirm("Are you sure you want to block?"))
-      return;
+    if (selectedId.length === 0) {
+      return toast.error("No items have been selected yet.");
+    }
+    if (!confirm("Are you sure you want to block?")) return;
     try {
       setIsLoading(true);
       const response = await fetch("/api/user/block", {
@@ -95,6 +99,9 @@ export default function TableToolbar() {
   };
 
   const handleActive = async () => {
+    if (selectedId.length === 0) {
+      return toast.error("No items have been selected yet.");
+    }
     if (
       selectedId.length == 0 ||
       !confirm("Are you sure you want to activate?")
