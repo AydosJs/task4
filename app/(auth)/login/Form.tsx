@@ -20,7 +20,9 @@ export default function Form() {
     try {
       setLoading(true);
       if (!emailRegex.test(formData.email)) {
-        return toast.error("Invalid email");
+        return toast.error("Invalid email", {
+          id: "invalidEmail",
+        });
       }
 
       const data = {
@@ -37,7 +39,9 @@ export default function Form() {
         router.push("/");
         router.refresh();
       } else {
-        toast.error(res?.error ?? "Invalid email or password");
+        toast.error(res?.error ?? "Invalid email or password", {
+          id: "invalidEmailOrPassword",
+        });
       }
     } catch (error) {
     } finally {
@@ -69,7 +73,7 @@ export default function Form() {
           type="text"
           id="email"
           name="email"
-          className="bg-neutral-100 text-neutral-900 font-medium mt-1 p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
+          className=" bg-neutral-800 border-2 text-neutral-100 border-neutral-700 font-medium mt-1 p-2 py-3 w-full rounded focus:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-300"
         />
       </div>
       <div>
@@ -86,14 +90,14 @@ export default function Form() {
           type="password"
           id="password"
           name="password"
-          className="bg-neutral-100 text-neutral-900 font-medium mt-1 p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
+          className=" bg-neutral-800 border-2 text-neutral-100 border-neutral-700 font-medium mt-1 p-2 py-3 w-full rounded focus:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-300"
         />
       </div>
       <div>
         <button
           disabled={loading}
           type="submit"
-          className="disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-neutral-800 disabled:hover:border-neutral-700 w-full bg-neutral-800 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
+          className="disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-neutral-800 disabled:hover:border-neutral-700 w-full bg-neutral-950/50 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
         >
           <div className="flex flex-row items-center justify-center w-full">
             Submit

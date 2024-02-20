@@ -28,7 +28,9 @@ export default function TableToolbar() {
 
   const handleDeleteClick = async () => {
     if (selectedId.length === 0) {
-      return toast.error("No items have been selected yet.");
+      return toast.error("No items have been selected yet.", {
+        id: "delete",
+      });
     }
     if (!confirm("Are you sure you want to delete?")) return;
     try {
@@ -53,7 +55,9 @@ export default function TableToolbar() {
         queryClient.invalidateQueries({
           queryKey: ["users"],
         });
-        toast.success(data.message);
+        toast.success(data.message, {
+          id: "deleted",
+        });
         checkId();
       } else {
         console.log("Unexpected response:", response.status);
@@ -68,7 +72,9 @@ export default function TableToolbar() {
 
   const handleBlock = async () => {
     if (selectedId.length === 0) {
-      return toast.error("No items have been selected yet.");
+      return toast.error("No items have been selected yet.", {
+        id: "block",
+      });
     }
     if (!confirm("Are you sure you want to block?")) return;
     try {
@@ -82,7 +88,9 @@ export default function TableToolbar() {
       });
       if (response.ok) {
         const data = await response.json();
-        toast.success(data.message);
+        toast.success(data.message, {
+          id: "blocked",
+        });
         checkId();
       } else {
         console.log("Unexpected response:", response.status);
@@ -100,7 +108,9 @@ export default function TableToolbar() {
 
   const handleActive = async () => {
     if (selectedId.length === 0) {
-      return toast.error("No items have been selected yet.");
+      return toast.error("No items have been selected yet.", {
+        id: "active",
+      });
     }
     if (
       selectedId.length == 0 ||
@@ -118,7 +128,9 @@ export default function TableToolbar() {
       });
       if (response.ok) {
         const data = await response.json();
-        toast.success(data.message);
+        toast.success(data.message, {
+          id: "activated",
+        });
       } else {
         console.log("Unexpected response:", response.status);
       }

@@ -25,9 +25,13 @@ export default function Form() {
     try {
       setLoading(true);
       if (!emailRegex.test(formData.email)) {
-        return toast.error("Invalid email");
+        return toast.error("Invalid email", {
+          id: "invalidEmail",
+        });
       } else if (!formData.password?.trim()) {
-        return toast.error("Use another password!");
+        return toast.error("Use another password!", {
+          id: "invalidPassword",
+        });
       }
       const response = await axios.post("api/auth/register", formData, {
         headers: {
@@ -35,13 +39,17 @@ export default function Form() {
         },
       });
       if (response.data.message === "User already exists") {
-        toast.error("Email already registered. Please use a different email.");
+        toast.error("Email already registered. Please use a different email.", {
+          id: "emailAlreadyRegistered",
+        });
       } else {
         await signIn("credentials", {
           ...formData,
           redirect: false,
         }).then(() => {
-          toast.success("Successfully registered");
+          toast.success("Successfully registered", {
+            id: "successfullyRegistered",
+          });
           router.push("/");
         });
       }
@@ -62,37 +70,39 @@ export default function Form() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-neutral-500"
-        >
-          Name
-        </label>
-        <input
-          value={formData.name ? formData.name : ""}
-          onChange={handleChange}
-          type="text"
-          id="name"
-          name="name"
-          className="bg-neutral-100 mt-1 text-neutral-900 font-medium p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="position"
-          className="block text-sm font-medium text-neutral-500"
-        >
-          Position
-        </label>
-        <input
-          value={formData.position ? formData.position : ""}
-          onChange={handleChange}
-          type="text"
-          id="position"
-          name="position"
-          className="bg-neutral-100 mt-1 text-neutral-900 font-medium p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
-        />
+      <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+        <div>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-neutral-500"
+          >
+            Name
+          </label>
+          <input
+            value={formData.name ? formData.name : ""}
+            onChange={handleChange}
+            type="text"
+            id="name"
+            name="name"
+            className="bg-neutral-800 border-neutral-700 mt-1 text-neutral-100 font-medium p-2 py-3 w-full border-2 rounded focus:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-300"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="position"
+            className="block text-sm font-medium text-neutral-500"
+          >
+            Position
+          </label>
+          <input
+            value={formData.position ? formData.position : ""}
+            onChange={handleChange}
+            type="text"
+            id="position"
+            name="position"
+            className="bg-neutral-800 border-neutral-700 mt-1 text-neutral-100 font-medium p-2 py-3 w-full border-2 rounded focus:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-300"
+          />
+        </div>
       </div>
       <div>
         <label
@@ -108,7 +118,7 @@ export default function Form() {
           type="text"
           id="email"
           name="email"
-          className="bg-neutral-100 mt-1 text-neutral-900 font-medium p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
+          className="bg-neutral-800 border-neutral-700 mt-1 text-neutral-100 font-medium p-2 py-3 w-full border-2 rounded focus:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-300"
         />
       </div>
       <div>
@@ -125,14 +135,14 @@ export default function Form() {
           type="password"
           id="password"
           name="password"
-          className="bg-neutral-100 mt-1 text-neutral-900 font-medium p-2 py-3 w-full border rounded focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 transition-colors duration-300"
+          className="bg-neutral-800 border-neutral-700 mt-1 text-neutral-100 font-medium p-2 py-3 w-full border-2 rounded focus:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-600 transition-colors duration-300"
         />
       </div>
       <div>
         <button
           disabled={loading}
           type="submit"
-          className="disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-neutral-800 disabled:hover:border-neutral-700 w-full bg-neutral-800 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
+          className="disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-neutral-800 disabled:hover:border-neutral-700 w-full bg-neutral-950/50 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
         >
           <div className="flex flex-row items-center justify-center w-full">
             Submit
