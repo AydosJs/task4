@@ -24,7 +24,8 @@ export default function TableHead({ userList }: Readonly<Props>) {
     ) {
       setSelectedId([]);
     } else {
-      const confirmMessage = "Do you want to current user to ?";
+      const confirmMessage =
+        "Do you want to include the current user in the selection?";
       const ids = userList.map((user) => Number(user.id));
       const filteredIds = confirm(confirmMessage)
         ? ids
