@@ -2,6 +2,7 @@
 
 import { useGlobalContext } from "@/context/store";
 import { UserValues } from "@/types";
+import { useSession } from "next-auth/react";
 
 interface Props {
   userList: UserValues[];
@@ -9,20 +10,28 @@ interface Props {
 
 export default function TableHead({ userList }: Readonly<Props>) {
   const context = useGlobalContext();
+  const { data: session } = useSession();
+
   if (!context) {
     throw new Error("Component must be used within a Provider");
   }
   const { selectedId, setSelectedId } = context;
 
   const handleClickAll = () => {
-    if (selectedId.length === userList.length) {
-      return setSelectedId(() => {
-        return [];
-      });
+    if (
+      selectedId.length === userList.length ||
+      selectedId.length === userList.length - 1
+    ) {
+      setSelectedId([]);
+    } else {
+      const confirmMessage = "Do you want to current user to ?";
+      const ids = userList.map((user) => Number(user.id));
+      const filteredIds = confirm(confirmMessage)
+        ? ids
+        : ids.filter((id) => id !== Number(session?.user.id));
+
+      setSelectedId(filteredIds);
     }
-    setSelectedId(() => {
-      return [...userList.map((user) => Number(user.id))];
-    });
   };
 
   return (
@@ -31,11 +40,15 @@ export default function TableHead({ userList }: Readonly<Props>) {
         <th scope="col" className="p-4">
           <div className="flex items-center">
             <input
-              checked={selectedId.length === userList.length}
+              checked={
+                selectedId.length === userList.length ||
+                (selectedId.length === userList.length - 1 &&
+                  !selectedId.includes(Number(session?.user?.id)))
+              }
               onChange={handleClickAll}
               id="checkbox-all"
               type="checkbox"
-              className="w-4 h-4  bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              className="w-4 h-4 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
             <label htmlFor="checkbox-all" className="sr-only">
               checkbox
