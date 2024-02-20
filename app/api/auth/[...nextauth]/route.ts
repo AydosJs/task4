@@ -36,10 +36,8 @@ const handler = NextAuth({
         const user = await userPromise;
 
         if (user && user.status === "blocked") {
-          toast.error(`User is not allowed!`);
-          return null;
+          throw new Error("User is blocked");
         }
-
         if (user && user.status !== "blocked") {
           const isPasswordValid = await compare(
             credentials?.password ?? "",
@@ -47,7 +45,7 @@ const handler = NextAuth({
           );
 
           if (!isPasswordValid) {
-            return null;
+            throw new Error("Invalid password");
           }
 
           await prisma.user.update({
@@ -61,7 +59,7 @@ const handler = NextAuth({
           };
         }
 
-        return null;
+        throw new Error("User not found");
       },
     }),
   ],

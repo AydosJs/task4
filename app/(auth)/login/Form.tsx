@@ -34,19 +34,18 @@ export default function Form() {
         lastLoggedIn: new Date(),
       };
 
-      await signIn("credentials", {
+      const res = await signIn("credentials", {
         ...data,
         redirect: false,
-      })
-        .then(() => {
-          router.push("/");
-          router.refresh();
-        })
-        .catch(() => {
-          return toast.error("Invalid email or password");
-        });
+      });
+
+      if (res?.ok) {
+        router.push("/");
+        router.refresh();
+      } else {
+        toast.error(res?.error ?? "Invalid email or password");
+      }
     } catch (error) {
-      console.log("login error", error);
     } finally {
       setLoading(false);
     }
