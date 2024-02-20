@@ -21,12 +21,6 @@ export default function Form() {
       setLoading(true);
       if (!emailRegex.test(formData.email)) {
         return toast.error("Invalid email");
-      } else if (
-        !formData.password ||
-        formData.password === "" ||
-        formData.password === " "
-      ) {
-        return toast.error("Use another password");
       }
 
       const data = {
@@ -97,9 +91,7 @@ export default function Form() {
       </div>
       <div>
         <button
-          disabled={
-            formData.password === "" || formData.password === " " || loading
-          }
+          disabled={loading}
           type="submit"
           className="disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-neutral-800 disabled:hover:border-neutral-700 w-full bg-neutral-800 border-2 border-neutral-700 mt-4 p-3 rounded hover:bg-neutral-900 hover:border-neutral-600 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 text-neutral-100 transition-colors duration-300"
         >
